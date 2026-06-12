@@ -94,7 +94,7 @@ img { user-select: none; -webkit-user-drag: none; }
   left: 50%;
   transform: translateX(-50%);
   /* width: clamp(560px, 40vw, 1240px); */
-  width: 90vw;
+  width: 80vw;
   height: auto;
   z-index: 2;
   pointer-events: none;
@@ -592,6 +592,7 @@ img { user-select: none; -webkit-user-drag: none; }
   .floater     { width: clamp(210px, 40vw, 320px); }
   .title       { width: 75vw; top: 14%; }
   .hug         { width: 70vw; }
+  .abbraccio   { width: 100vw; }
   .btn-pill,
   .bubble      { font-size: 12px; padding: 0.7em 1.2em; }
 }
