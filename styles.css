@@ -86,8 +86,20 @@ img { user-select: none; -webkit-user-drag: none; }
 }
 
 /* =========================================
-   ABBRACCIO (immagine centrale)
+   ABBRACCIO (animazione centrale)
    ========================================= */
+.abbraccio {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(560px, 140vw, 1240px);
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
+}
+
 .hug {
   position: absolute;
   left: 50%;
@@ -135,7 +147,7 @@ img { user-select: none; -webkit-user-drag: none; }
 .floater.dragging { cursor: grabbing; z-index: 50; animation-play-state: paused; }
 
 .floater .wiggle {
-  width: 100%;
+  width: 150%;
   animation: wiggle var(--wiggle-dur, 4.5s) ease-in-out infinite alternate;
   transform-origin: 50% 50%;
 }

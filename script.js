@@ -147,7 +147,7 @@
   // -----------------------------
   // Sostituire questi URL quando forniti dall'utente.
   const LINKS = {
-    biglietti: '#',      // TODO: URL ticketing
+    biglietti: 'https://link.dice.fm/lc813c311f7b',      // TODO: URL ticketing
     arrivare:  'https://maps.app.goo.gl/5PbU46M9bnMrmFZUA',      // TODO: URL Google Maps o pagina interna
     instagram: 'https://www.instagram.com/fafa_festival/',
   };
