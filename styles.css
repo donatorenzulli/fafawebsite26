@@ -99,6 +99,7 @@ img { user-select: none; -webkit-user-drag: none; }
   z-index: 2;
   pointer-events: none;
   display: block;
+  mix-blend-mode: screen;
 }
 
 .hug {
