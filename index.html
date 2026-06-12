@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FaFa Fest 2026 — Foggia, Slow Park</title>
+  <meta name="description" content="FaFa Fest 2026 — 28/29 Agosto, Foggia, Slow Park. Una megalomane scusa per incontrarti." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="FaFa Fest 2026" />
+  <meta property="og:description" content="28/29 Agosto, Foggia, Slow Park. Una megalomane scusa per incontrarti." />
+  <meta property="og:type" content="website" />
+  <!-- TODO: <meta property="og:image" content="assets/og-image.jpg" /> -->
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/objects/fafafest.png" type="image/png" />
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- BACKGROUND: cielo + nuvole                   -->
+  <!-- ============================================ -->
+  <div class="bg-sky" aria-hidden="true"></div>
+
+  <!-- ============================================ -->
+  <!-- STAGE: contenitore principale                -->
+  <!-- ============================================ -->
+  <main class="stage" id="stage">
+
+    <!-- Titolo FaFa Fest -->
+    <div class="title" aria-hidden="true">
+      <img src="assets/objects/fafafest.png" alt="FaFa Fest 2026" id="title-img" />
+    </div>
+
+    <!-- ============================================ -->
+    <!-- OGGETTI FLUTTUANTI DRAGGABILI                -->
+    <!-- data-x e data-y sono percentuali del viewport -->
+    <!-- ============================================ -->
+
+    <div class="floater draggable" data-x="8"  data-y="18" data-rot="-6" data-dur="5.2">
+      <div class="wiggle"><img src="assets/objects/banana.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <div class="floater draggable" data-x="6"  data-y="65" data-rot="4"  data-dur="6.1">
+      <div class="wiggle"><img src="assets/objects/melograno.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <div class="floater draggable" data-x="22" data-y="45" data-rot="-3" data-dur="4.7">
+      <div class="wiggle"><img src="assets/objects/cavallo.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <div class="floater draggable" data-x="58" data-y="35" data-rot="5"  data-dur="5.8">
+      <div class="wiggle"><img src="assets/objects/anello.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <div class="floater draggable" data-x="82" data-y="20" data-rot="-4" data-dur="6.3">
+      <div class="wiggle"><img src="assets/objects/gazza.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <div class="floater draggable" data-x="84" data-y="58" data-rot="6"  data-dur="5.0">
+      <div class="wiggle"><img src="assets/objects/anguria.png" alt="" draggable="false" aria-hidden="true" /></div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PULSANTI PRINCIPALI (wiggle, NON draggabili) -->
+    <!-- ============================================ -->
+
+    <button class="btn-pill btn-light corner-tl" data-action="open-lineup" data-dur="4.5" data-rot="-2">
+      <span class="wiggle-inline">Line Up</span>
+    </button>
+
+    <button class="btn-pill btn-light corner-tl-2" data-action="open-perche" data-dur="5.1" data-rot="2">
+      <span class="wiggle-inline">Perché sì</span>
+    </button>
+
+    <a class="btn-pill btn-primary corner-tr" href="#" id="btn-biglietti" target="_blank" rel="noopener" data-dur="4.8" data-rot="-2">
+      <span class="wiggle-inline">Biglietti</span>
+    </a>
+
+    <!-- ============================================ -->
+    <!-- BUBBLE / CHIPS (draggabili)                  -->
+    <!-- ============================================ -->
+
+    <a class="bubble bubble-light bubble-rot-a" href="#" id="btn-arrivare" data-x="12" data-y="36" data-rot="-3" data-dur="5.6" target="_blank" rel="noopener">
+      <span class="wiggle-inline">Come arrivare</span>
+    </a>
+
+    <!-- <button class="bubble bubble-green bubble-rot-b" data-action="open-fafacamp" data-x="40" data-y="72" data-rot="3" data-dur="5.3">
+      <span class="wiggle-inline">Il FaFaCamp?</span>
+    </button> -->
+
+    <a class="bubble bubble-light bubble-rot-c" href="http://www.instagram.com/fafa_festival" id="btn-instagram" data-x="78" data-y="24" data-rot="2" data-dur="5.9" target="_blank" rel="noopener">
+      <span class="wiggle-inline">Instagram!!</span>
+    </a>
+
+  </main>
+
+  <!-- Overlay Line Up -->
+  <div class="overlay" id="overlay-lineup" hidden role="dialog" aria-modal="true" aria-label="Line Up">
+    <div class="overlay-backdrop"></div>
+    <div class="overlay-panel">
+      <img src="assets/overlay/lineup.png" alt="Line Up FaFa Fest 2026" class="overlay-img" />
+      <button class="overlay-close" aria-label="Chiudi">✕</button>
+    </div>
+  </div>
+
+  <!-- Overlay Perché sì -->
+  <div class="overlay" id="overlay-perche" hidden role="dialog" aria-modal="true" aria-label="Perché sì">
+    <div class="overlay-backdrop"></div>
+    <div class="overlay-panel">
+      <img src="assets/overlay/motivazione.png" alt="Perché sì" class="overlay-img" />
+      <button class="overlay-close" aria-label="Chiudi">✕</button>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

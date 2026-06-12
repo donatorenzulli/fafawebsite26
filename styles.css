@@ -1,0 +1,584 @@
+/* =========================================
+   FAFA FEST 2026 — landing styles
+   ========================================= */
+
+@font-face {
+  font-family: 'Bourrasque';
+  src: url("assets/Bourrasque_font/BourrasqueTEST-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bourrasque Est';
+  src: url("assets/Bourrasque_font/BourrasqueTEST-45Est.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bourrasque Ouest';
+  src: url("assets/Bourrasque_font/BourrasqueTEST-45Ouest.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --sky-top: #9bd4f5;
+  --sky-bottom: #cfe9f7;
+  --red: #ee2820;
+  --red-hover: #d11d16;
+  --green: #4ec363;
+  --ink: #0a0a0a;
+  --white: #ffffff;
+
+  --font-ui: 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;            /* pagina full-screen, niente scroll */
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--sky-top);
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  touch-action: none;          /* fondamentale per il drag su touch */
+}
+
+img { user-select: none; -webkit-user-drag: none; }
+
+/* =========================================
+   SFONDO CIELO + NUVOLE
+   ========================================= */
+.bg-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-bottom) 100%);
+  /* TODO: aggiungere immagine nuvole quando fornita
+     background-image: url("assets/bg/clouds.webp"), linear-gradient(...);
+     background-size: cover;
+     background-position: center;
+  */
+}
+
+/* =========================================
+   STAGE
+   ========================================= */
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* =========================================
+   ABBRACCIO (immagine centrale)
+   ========================================= */
+.hug {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(280px, 38vw, 560px);
+  aspect-ratio: 1 / 1;
+  z-index: 2;
+  pointer-events: none;        /* non blocca il drag degli oggetti */
+}
+.hug .hug-media,
+.hug svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* =========================================
+   TITOLO FAFA FEST
+   ========================================= */
+.title {
+  position: absolute;
+  left: 50%;
+  top: 2.5%;
+  transform: translate(-50%, 0);
+  width: clamp(320px, 45vw, 760px);
+  z-index: 3;
+  pointer-events: none;
+}
+.title img { width: 100%; height: auto; display: block; }
+
+/* =========================================
+   OGGETTI FLUTTUANTI (banana, cavallo, ecc.)
+   ========================================= */
+.floater {
+  position: absolute;
+  width: clamp(140px, 20vw, 300px);
+  z-index: 4;
+  touch-action: none;
+  cursor: grab;
+  will-change: transform, left, top;
+  animation: float var(--float-dur, 6.5s) ease-in-out infinite;
+  /* posizione iniziale viene impostata via JS leggendo data-x / data-y */
+}
+.floater.dragging { cursor: grabbing; z-index: 50; animation-play-state: paused; }
+
+.floater .wiggle {
+  width: 100%;
+  animation: wiggle var(--wiggle-dur, 4.5s) ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+}
+.floater:hover .wiggle {
+  animation-name: wiggle-hover;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  --wiggle-rot: 7deg;
+}
+.floater img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+}
+
+/* mentre l'utente sta trascinando, il wiggle viene messo in pausa */
+.floater.dragging .wiggle { animation-play-state: paused; }
+
+@keyframes wiggle {
+  0%   { transform: rotate(calc(var(--wiggle-rot, 4deg) * -1)) translateY(0); }
+  50%  { transform: rotate(0deg) translateY(-4px); }
+  100% { transform: rotate(var(--wiggle-rot, 4deg)) translateY(0); }
+}
+
+/* =========================================
+   PULSANTI / CHIPS
+   ========================================= */
+.btn-pill,
+.bubble {
+  position: absolute;
+  z-index: 5;
+  border: none;
+  font-family: 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(13px, 1.1vw, 16px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.45em 1.8em;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, background-color 0.15s ease, font-family 0.15s ease, box-shadow 0.15s ease;
+}
+.bubble-rot-a { transform: rotate(-2deg); }
+.bubble-rot-b { transform: rotate(1.7deg); }
+.bubble-rot-c { transform: rotate(-1.2deg); }
+.btn-pill {
+  animation: none;
+}
+.btn-pill:active,
+.bubble:active { transform: scale(0.97); }
+
+.btn-pill:hover,
+.bubble:hover {
+  font-family: 'Bourrasque Est', 'Bourrasque Ouest', 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  animation-duration: 3.8s;
+}
+
+.btn-pill:hover { font-family: 'Bourrasque Est', 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+.bubble:hover { font-family: 'Bourrasque Ouest', 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+
+.btn-light { background: var(--white); color: var(--ink); }
+.btn-light:hover { background: #f3f3f3; }
+
+.btn-primary { background: var(--red); color: var(--white); }
+.btn-primary:hover { background: var(--red-hover); }
+
+.bubble-light { background: var(--white); color: var(--ink); text-transform: uppercase; font-weight: 400; }
+.bubble-green { background: var(--green); color: var(--white); text-transform: uppercase; font-weight: 400; }
+
+/* posizionamento agli angoli per i pulsanti principali */
+.corner-tl   { top: 2.5vh; left: 2vw; }
+.corner-tl-2 { top: 2.5vh; left: calc(2vw + 130px); }
+.corner-tr   { top: 2.5vh; right: 2vw; }
+
+/* wiggle interno: rotation continua sul testo */
+.wiggle-inline {
+  display: inline-block;
+  animation: wiggle-text var(--wiggle-dur, 5s) ease-in-out infinite alternate;
+}
+.btn-pill:hover .wiggle-inline,
+.bubble:hover .wiggle-inline {
+  animation-name: wiggle-text-strong;
+  animation-duration: 0.95s;
+}
+@keyframes wiggle-text {
+  0%   { transform: rotate(calc(var(--wiggle-rot, 2deg) * -1)); }
+  100% { transform: rotate(var(--wiggle-rot, 2deg)); }
+}
+@keyframes wiggle-text-strong {
+  0%   { transform: rotate(calc(var(--wiggle-rot, 3deg) * -1.8)); }
+  100% { transform: rotate(calc(var(--wiggle-rot, 3deg) * 1.8)); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(1deg); }
+}
+@keyframes wiggle-hover {
+  0%   { transform: rotate(calc(var(--wiggle-rot, 6deg) * -1.8)) translateY(0); }
+  50%  { transform: rotate(0deg) translateY(-16px); }
+  100% { transform: rotate(calc(var(--wiggle-rot, 6deg) * 1.8)) translateY(0); }
+}
+
+/* le bubble draggabili si comportano come .floater per posizione */
+.bubble.draggable,
+.btn-pill.draggable {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+}
+.bubble.draggable.dragging,
+.btn-pill.draggable.dragging { cursor: grabbing; z-index: 50; }
+.bubble.draggable.dragging .wiggle-inline,
+.btn-pill.draggable.dragging .wiggle-inline { animation-play-state: paused; }
+
+/* =========================================
+   OVERLAY
+   ========================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.overlay[hidden] { display: none; }
+
+.overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+.overlay-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  /* background: transparent; */
+}
+
+.overlay-open .title {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.overlay-open .stage .floater img,
+.overlay-open .stage .btn-pill,
+.overlay-open .stage .bubble {
+  filter: blur(5px);
+}
+
+.overlay-open .stage .title {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.overlay.sheet-open .overlay-panel {
+  background: transparent;
+  box-shadow: none;
+}
+
+.artisti-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: min(860px, 90vw);
+}
+
+.artisti-big {
+  width: min(780px, 80vw);
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 22px;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  color: var(--red);
+  font-size: 34px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.sheet-close {
+  display: none;
+}
+
+.lineup-sheet { transform: rotate(-2deg); }
+
+.perche-sheet { transform: rotate(2deg); }
+
+.lineup-header {
+  margin-bottom: 1rem;
+}
+
+.lineup-label {
+  display: inline-block;
+  font-family: 'Bourrasque Est', 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color: var(--red);
+  font-size: clamp(20px, 2.4vw, 26px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.artist-cloud {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+}
+
+.artist-chip {
+  position: absolute;
+  display: inline-block;
+  color: var(--red);
+  font-family: 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 0.95;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.artist-chip:hover {
+  color: var(--red-hover);
+  transform: scale(1.03) rotate(0deg);
+}
+
+.artist-macello {
+  top: 17%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  font-size: clamp(24px, 3.5vw, 42px);
+}
+
+.artist-sick {
+  top: 28%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(34px, 4.7vw, 62px);
+  font-weight: 700;
+}
+
+.artist-officina {
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  font-size: clamp(26px, 4vw, 46px);
+}
+
+.artist-hammon {
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  font-size: clamp(28px, 4.2vw, 50px);
+}
+
+.artist-popa {
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(32px, 4.4vw, 54px);
+}
+
+.artist-visino {
+  top: 64%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(28px, 4vw, 48px);
+}
+
+.artist-zorah {
+  top: 72%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.artist-han {
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(26px, 4vw, 48px);
+}
+
+.artist-gabriele {
+  top: 88%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.artist-rashco {
+  top: 94%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.artist-sorpresa {
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -75%) rotate(-2deg);
+  font-size: clamp(18px, 3vw, 32px);
+  background: var(--red);
+  color: var(--white);
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+}
+
+.artist-preview {
+  position: absolute;
+  top: 12%;
+  right: 6%;
+  z-index: 120;
+  width: clamp(220px, 22vw, 320px);
+  min-height: 320px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0.5rem;
+}
+
+.artist-preview-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.artist-preview-inner.wiggle {
+  animation: wiggle-preview 5s ease-in-out infinite alternate;
+}
+
+.artist-preview-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.artist-preview-name {
+  display: block;
+  margin-top: 0.9rem;
+  font-family: 'Bourrasque', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  font-size: clamp(14px, 1.2vw, 18px);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.artist-preview.wiggle {
+  animation: wiggle-preview 5s ease-in-out infinite alternate;
+}
+
+@keyframes wiggle-preview {
+  0%   { transform: translateY(0) rotate(-0.6deg); }
+  50%  { transform: translateY(-8px) rotate(0.6deg); }
+  100% { transform: translateY(0) rotate(-0.4deg); }
+}
+
+.overlay-backdrop {
+  background: rgba(10, 10, 10, 0.65);
+}
+
+.overlay-lineup .overlay-placeholder { display: none; }
+
+.overlay-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 24px;
+  line-height: 1;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.overlay-close:hover { background: var(--red); }
+
+.overlay-img {
+  position: relative;
+  z-index: 1;
+  max-width: min(780px, 88vw);
+  max-height: 85dvh;
+  width: auto;
+  height: auto;
+  display: block;
+  /* box-shadow: 0 40px 100px rgba(0, 0, 0, 0.35); */
+  animation: overlay-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+.overlay-content h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  margin: 0 0 1rem;
+  color: var(--red);
+}
+.overlay-placeholder { color: #666; font-style: italic; }
+
+/* =========================================
+   MOBILE TWEAKS
+   ========================================= */
+@media (max-width: 720px) {
+  .corner-tl-2 { left: calc(2vw + 100px); }
+  .floater     { width: clamp(70px, 22vw, 130px); }
+  .title       { width: 75vw; top: 14%; }
+  .hug         { width: 70vw; }
+  .btn-pill,
+  .bubble      { font-size: 12px; padding: 0.7em 1.2em; }
+}
